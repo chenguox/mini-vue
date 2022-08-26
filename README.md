@@ -63,7 +63,7 @@ template  -> 虚拟 DOM -> 真实 DOM -> 页面效果
 * Runtime 模块
 * Reactivity 模块
 
-![](https://uploader.shimo.im/f/rz5M8AxI4hSmveOy.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2NjE1MDM2MjMsImZpbGVHVUlEIjoibTVrdjkwSnplemY1Vk1xWCIsImlhdCI6MTY2MTUwMzMyMywiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNTA5OTg5N30.Ry7EinHjifbu3NL7uOMNykSfPg571PO5ed9oHfnJ0Dg)
+![1661503691385.png](image/README/1661503691385.png)
 
 ### **Compiler 模块**
 
@@ -297,7 +297,7 @@ objMap.set('age', [ objAgeFn1, objAgeFn1 ])
 
 **如图所示：**
 
-![](https://uploader.shimo.im/f/Nh61bpT0H40PcQmV.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2NjE1MDM2MjMsImZpbGVHVUlEIjoibTVrdjkwSnplemY1Vk1xWCIsImlhdCI6MTY2MTUwMzMyMywiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjoxNTA5OTg5N30.Ry7EinHjifbu3NL7uOMNykSfPg571PO5ed9oHfnJ0Dg)
+![1661503704282.png](image/README/1661503704282.png)
 
 * **监听执行**
 
@@ -316,6 +316,8 @@ fns.forEach((item) => item())
 ```
 
 ### **依赖收集系统**
+
+完整一点的代码如下：
 
 ```
 // 每个对象的属性应该有自己的depend对象
@@ -370,7 +372,7 @@ function watchFn(fn) {
 
 ### **Vue3的响应式实现**
 
-**Vue3 中使用 Proxy 类来创建一个代理对象，操作的是代理对象，具体实现如下：**
+Vue3 中使用 Proxy 类来创建一个代理对象，操作的是代理对象，具体实现如下：
 
 ```
 function reactive(obj) {
@@ -391,7 +393,7 @@ function reactive(obj) {
 
 ### **Vue2的响应式实现**
 
-**Vue2 中实现响应式是使用 Object.defineProperty 对一个对象里的属性进行劫持，操作的是原对象。**
+Vue2 中实现响应式是使用 Object.defineProperty 对一个对象里的属性进行劫持，操作的是原对象。
 
 ```
 function reactive2(obj) {
