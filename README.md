@@ -18,7 +18,7 @@
 
 html 页面代码 -> 真实的 DOM -> 页面效果
 
-### **虚拟 dom 的理解**
+### **虚拟 DOM 的理解**
 
 **Vue 引入虚拟 DOM 来对真实 DOM 进行抽象。**
 
@@ -28,13 +28,13 @@ html 页面代码 -> 真实的 DOM -> 页面效果
 
 就是将下面的代码(一个元素)，变成一个 JavaScript 对象来描述：
 
-```
+```html
 <div>哈哈哈</div>
 ```
 
 抽象成如下的代码，我们称之为 `虚拟节点` 。所以，它就是一个对象而已。
 
-```
+```javascript
 const vnode = {
   tag: 'div',
   children: '哈哈哈'
@@ -97,7 +97,7 @@ patch 函数， 用于对两个 VNode 进行比较，决定如何处理新的 VN
 
 h 函数的实现非常简单，接收三个参数 `标签名` ，  `属性值` ， `子节点` ，并直接组装成一个虚拟节点对象返回即可
 
-```
+```javascript
 const h = (tag, props, children) => {
   return {
     tag,
@@ -117,7 +117,7 @@ const el = vnode.el = document.createElement(vnode.tag)
 
 第二步：处理 props 属性，如果是普通属性，就使用 setAttribute 添加即可，如果以 on 开头，那么使用 addEventListener 添加对应的监听事件。
 
-```
+```javascript
 if (vnode.props) {
   for (const key in vnode.props) {
     const value = vnode.props[key];
@@ -134,7 +134,7 @@ if (vnode.props) {
 
 第三步：处理子节点，如果是字符串节点，那么直接将内容设置给元素对象的 textContent。如果是数组节点，那么需要遍历调用 mount 函数。 
 
-```
+```javascript
 if (vnode.children) {
   if (typeof vnode.children === 'string') {
     el.textContent = vnode.children
@@ -155,7 +155,7 @@ if (vnode.children) {
 * 需要找到就旧节点的元素的父节点，删除原来的旧节点的元素
 * 挂载新节点到旧节点的元素的父节点上
 
-```
+```javascript
 // n1 代表旧节点  n2 代表新节点
 const patch = (n1, n2) => {
   if (n1.tag !== n2.tag) {
@@ -175,7 +175,7 @@ const patch = (n1, n2) => {
 * 获取旧节点的元素对象
 * 将旧节点的元素对象挂载到新节点的元素对象上
 
-```
+```javascript
 // 1.取出element对象, 并且在n2中进行保存
 const el = n2.el = n1.el;
 // 等价于 
@@ -186,14 +186,14 @@ const el = n2.el = n1.el;
 **第二步，处理 props 的情况，添加新的属性，删除不需要的属性**
 
 ```
-// 2.处理props
+javascript// 2.处理props
 const oldProps = n1.props || {};
 const newProps = n2.props || {};
 ```
 
 * 遍历新节点的属性对象，通过属性名获取新旧节点的属性值进行比较，将缺少的新属性添加到旧节点的元素对象上
 
-```
+```javascript
 // 2.1.获取所有的newProps添加到el
 for (const key in newProps) {
   const oldValue = oldProps[key];
@@ -210,7 +210,7 @@ for (const key in newProps) {
 
 * 遍历旧节点的属性对象，移除事件监听，并将 key 不存在与新节点的属性对象的中的移除
 
-```
+```javascript
 // 2.2.删除旧的props
 for (const key in oldProps) {
   if (key.startsWith("on")) { 
@@ -252,7 +252,7 @@ for (const key in oldProps) {
 
 * 比如：我们有这样一个对象
 
-```
+```javascript
 const obj = {
   name: '小明',
   age: '18'
@@ -261,7 +261,7 @@ const obj = {
 
 * 当 obj.name 改变时，执行这两个函数
 
-```
+```javascript
 function objNameFn1() {
   console.log('objName1被执行')
 }
@@ -283,7 +283,7 @@ function objAgeFn1() {
 
 * 实现收集依赖结构
 
-```
+```javascript
 // 创建 weakMap 和 map 组合成收集依赖的数据结构
 const weakMap = new WeakMap()
 const objMap = new Map() // obj对象
@@ -301,7 +301,7 @@ objMap.set('age', [ objAgeFn1, objAgeFn1 ])
 
 * **监听执行**
 
-```
+```javascript
 // 当 obj.name 发送改变时候，取出来执行
 obj.name = '小红'
 // 取出对应obj的Map
@@ -319,7 +319,7 @@ fns.forEach((item) => item())
 
 完整一点的代码如下：
 
-```
+```javascript
 // 每个对象的属性应该有自己的depend对象
 let reactiveFn = null
 class Depend {
@@ -374,7 +374,7 @@ function watchFn(fn) {
 
 Vue3 中使用 Proxy 类来创建一个代理对象，操作的是代理对象，具体实现如下：
 
-```
+```javascript
 function reactive(obj) {
   return new Proxy(obj, {
     get: function (target, key, receiver) {
@@ -395,7 +395,7 @@ function reactive(obj) {
 
 Vue2 中实现响应式是使用 Object.defineProperty 对一个对象里的属性进行劫持，操作的是原对象。
 
-```
+```javascript
 function reactive2(obj) {
   Object.keys(obj).forEach(key => {
     const dep = getDepend(obj, key)
@@ -425,7 +425,7 @@ function reactive2(obj) {
 
 **在使用 vue 开发中，我们会引入一个 createApp 方法，并进行挂载，如下：**
 
-```
+```javascript
 import { createApp } from 'vue'
 const app = createApp(App)
 app.mount('#app')
@@ -438,7 +438,7 @@ app.mount('#app')
 
 **实现代码如下：**
 
-```
+```javascript
 function createApp(rootComponent) {
   return {
     mount(selector) {
