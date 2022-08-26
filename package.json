@@ -1,0 +1,22 @@
+{
+  "name": "mini-vue",
+  "version": "1.0.0",
+  "description": "**这里我们实现一个简洁版的 Mini-Vue 框架，该 Vue 包含三个模块：**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Coder-Cgx/mini-vue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Coder-Cgx/mini-vue/issues"
+  },
+  "homepage": "https://github.com/Coder-Cgx/mini-vue#readme",
+  "devDependencies": {
+    "rollup": "^2.78.1"
+  }
+}

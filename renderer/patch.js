@@ -51,6 +51,7 @@ const patch = (n1, n2) => {
       // 边界情况，有可能 oldChildren 也是一个字符串
       if (typeof oldChildren === 'string') {
         if (newChildren !== oldChildren) {
+          // console.log(el)
           el.textContent = newChildren
         }
       } else {

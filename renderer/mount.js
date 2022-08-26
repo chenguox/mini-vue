@@ -3,9 +3,9 @@
  * @param {*} vnode 虚拟节点(对象)
  * @param {*} container 要挂载元素对象
  */
- const mount = (vnode, container) => {
+const mount = (vnode, container) => {
   // 1、创建出真实的原生，并且在 vnode 上保留 el
-  const el = vnode.le = document.createElement(vnode.tag)
+  const el = vnode.el = document.createElement(vnode.tag)
 
   // 2、处理 props
   if (vnode.props) {

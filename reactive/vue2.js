@@ -35,13 +35,13 @@ function getDepend(obj, key) {
 }
 
 let reactiveFn = null
-function watchFn(fn) {
+function watchEffect(fn) {
   reactiveFn = fn
   fn()
   reactiveFn = null
 }
 
-function reactive2(obj) {
+function reactive(obj) {
   Object.keys(obj).forEach(key => {
     const dep = getDepend(obj, key)
     let value = obj[key]
@@ -63,6 +63,11 @@ function reactive2(obj) {
   return obj
 }
 
+export {
+  watchEffect,
+  reactive
+} 
+
 // // 测试代码
 // const obj = {
 //   name: 'aaa',
@@ -81,30 +86,30 @@ function reactive2(obj) {
 // proxyObj.name = 'ddd'
 // proxyObj.name = 'fff'
 
-// 测试代码
-const info = reactive2({ counter: 100, name: "why" });
-const foo = reactive2({ height: 1.88 });
+// // 测试代码
+// const info = reactive2({ counter: 100, name: "why" });
+// const foo = reactive2({ height: 1.88 });
 
-// watchEffect1
-watchFn(function () {
-  console.log("effect1:", info.counter * 2, info.name);
-})
+// // watchEffect1
+// watchFn(function () {
+//   console.log("effect1:", info.counter * 2, info.name);
+// })
 
-// watchEffect2
-watchFn(function () {
-  console.log("effect2:", info.counter * info.counter);
-})
+// // watchEffect2
+// watchFn(function () {
+//   console.log("effect2:", info.counter * info.counter);
+// })
 
-// watchEffect3
-watchFn(function () {
-  console.log("effect3:", info.counter + 10, info.name);
-})
+// // watchEffect3
+// watchFn(function () {
+//   console.log("effect3:", info.counter + 10, info.name);
+// })
 
-watchFn(function () {
-  console.log("effect4:", foo.height);
-})
+// watchFn(function () {
+//   console.log("effect4:", foo.height);
+// })
 
 // info.counter++;
 // info.name = "why";
 
-foo.height = 2;
+// foo.height = 2;

@@ -132,7 +132,7 @@ if (vnode.props) {
 }
 ```
 
-第三步：处理子节点，如果是字符串节点，那么直接将内容设置给元素对象的 textContent。如果是数组节点，那么需要遍历调用 mount 函数。 
+第三步：处理子节点，如果是字符串节点，那么直接将内容设置给元素对象的 textContent。如果是数组节点，那么需要遍历调用 mount 函数。
 
 ```javascript
 if (vnode.children) {
@@ -185,7 +185,7 @@ const el = n2.el = n1.el;
 
 **第二步，处理 props 的情况，添加新的属性，删除不需要的属性**
 
-```
+```javascript
 javascript// 2.处理props
 const oldProps = n1.props || {};
 const newProps = n2.props || {};
@@ -272,7 +272,7 @@ function objNameFn2() {
 
 * 当 obj.age 改变时，执行这两个函数
 
-```
+```javascript
 function objAgeFn1() {
   console.log('objName1被执行')
 }
@@ -462,3 +462,11 @@ function createApp(rootComponent) {
   }
 }
 ```
+
+## 使用 rollup 打包
+
+![1661533826172.png](image/README/1661533826172.png)
+
+运行如下：
+
+![1661533840891.png](image/README/1661533840891.png)

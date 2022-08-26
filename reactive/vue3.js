@@ -35,7 +35,7 @@ function getDepend(obj, key) {
   return dep
 }
 
-function watchFn(fn) {
+function watchEffect(fn) {
   reactiveFn = fn
   fn()
   reactiveFn = null
@@ -56,20 +56,25 @@ function reactive(obj) {
   })
 }
 
-// 测试代码
-const obj = {
-  name: 'aaa',
-  age: 18
-}
+// // 测试代码
+// const obj = {
+//   name: 'aaa',
+//   age: 18
+// }
 
-function print() {
-  console.log('obj对象的name发生改变执行该函数', proxyObj.name);
-}
+// function print() {
+//   console.log('obj对象的name发生改变执行该函数', proxyObj.name);
+// }
 
-const proxyObj = reactive(obj)
-watchFn(print)
-console.log('----');
-proxyObj.name = 'bbb'
-proxyObj.name = 'ccc'
-proxyObj.name = 'ddd'
-proxyObj.name = 'fff'
+// const proxyObj = reactive(obj)
+// watchEffect(print)
+// console.log('----');
+// proxyObj.name = 'bbb'
+// proxyObj.name = 'ccc'
+// proxyObj.name = 'ddd'
+// proxyObj.name = 'fff'
+
+export {
+  watchEffect,
+  reactive
+} 
