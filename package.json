@@ -4,6 +4,7 @@
   "description": "**这里我们实现一个简洁版的 Mini-Vue 框架，该 Vue 包含三个模块：**",
   "main": "index.js",
   "scripts": {
+    "build": "rollup ./src/main.js -f iife -o build/bundle.browser.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
