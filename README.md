@@ -2,9 +2,9 @@
 
 **这里我们实现一个简洁版的 Mini-Vue 框架，该 Vue 包含三个模块：**
 
-* 渲染系统模块
-* 可响应式系统模块
-* 应用程序入口模块
+- 渲染系统模块
+- 可响应式系统模块
+- 应用程序入口模块
 
 ## **真实 DOM 和 虚拟 DOM 的理解**
 
@@ -36,9 +36,9 @@ html 页面代码 -> 真实的 DOM -> 页面效果
 
 ```javascript
 const vnode = {
-  tag: 'div',
-  children: '哈哈哈'
-}
+  tag: "div",
+  children: "哈哈哈",
+};
 ```
 
 **而虚拟 DOM 就是多个虚拟节点组合而成。**
@@ -53,17 +53,17 @@ const vnode = {
 
 **所以现代的开发方式：**
 
-template  -> 虚拟 DOM -> 真实 DOM -> 页面效果
+template -> 虚拟 DOM -> 真实 DOM -> 页面效果
 
 ## **Vue 的三大核心系统**
 
 **事实上，Vue 的源码包含三大核心：**
 
-* Compiler 模块
-* Runtime 模块
-* Reactivity 模块
+- Compiler 模块
+- Runtime 模块
+- Reactivity 模块
 
-![1661503691385.png](image/README/1661503691385.png)
+![1661503691385.png](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/5129/1661503691385.png)
 
 ### **Compiler 模块**
 
@@ -81,21 +81,21 @@ Vue 的响应式系统，Vue2 中使用 Object.defineProperty 劫持对象中的
 
 **渲染系统，该模块主要包含三个功能：**
 
-* **功能一：**
+- **功能一：**
 
 h 函数，用于返回一个 VNode 对象
 
-* **功能二：**
+- **功能二：**
 
 mount 函数，用于将 VNode 挂载到 DOM 上
 
-* **功能三：**
+- **功能三：**
 
 patch 函数， 用于对两个 VNode 进行比较，决定如何处理新的 VNode
 
 ### **实现 h 函数**
 
-h 函数的实现非常简单，接收三个参数 `标签名` ，  `属性值` ， `子节点` ，并直接组装成一个虚拟节点对象返回即可
+h 函数的实现非常简单，接收三个参数 `标签名` ， `属性值` ， `子节点` ，并直接组装成一个虚拟节点对象返回即可
 
 ```javascript
 const h = (tag, props, children) => {
@@ -103,8 +103,8 @@ const h = (tag, props, children) => {
     tag,
     props,
     children,
-  }
-}
+  };
+};
 ```
 
 ### **实现 mount 函数**
@@ -122,11 +122,11 @@ if (vnode.props) {
   for (const key in vnode.props) {
     const value = vnode.props[key];
 
-
-    if (key.startsWith("on")) { // 对事件监听的判断
-      el.addEventListener(key.slice(2).toLowerCase(), value)
+    if (key.startsWith("on")) {
+      // 对事件监听的判断
+      el.addEventListener(key.slice(2).toLowerCase(), value);
     } else {
-      el.setAttribute(key, value)
+      el.setAttribute(key, value);
     }
   }
 }
@@ -136,12 +136,12 @@ if (vnode.props) {
 
 ```javascript
 if (vnode.children) {
-  if (typeof vnode.children === 'string') {
-    el.textContent = vnode.children
+  if (typeof vnode.children === "string") {
+    el.textContent = vnode.children;
   } else {
-    vnode.children.forEach(item => {
-      mount(item, el)
-    })
+    vnode.children.forEach((item) => {
+      mount(item, el);
+    });
   }
 }
 ```
@@ -152,8 +152,8 @@ if (vnode.children) {
 
 **第一种情况：新旧节点是不同类型的节点**
 
-* 需要找到就旧节点的元素的父节点，删除原来的旧节点的元素
-* 挂载新节点到旧节点的元素的父节点上
+- 需要找到就旧节点的元素的父节点，删除原来的旧节点的元素
+- 挂载新节点到旧节点的元素的父节点上
 
 ```javascript
 // n1 代表旧节点  n2 代表新节点
@@ -161,37 +161,37 @@ const patch = (n1, n2) => {
   if (n1.tag !== n2.tag) {
     const n1ElParent = n1.el.parentElement;
     n1ElParent.removeChild(n1.el);
-    mount(n2, n1ElParent)
+    mount(n2, n1ElParent);
   } else {
     // ....
   }
-}
+};
 ```
 
 **第二种情况：新旧节点是相同的节点**
 
 **第一步，处理元素对象**
 
-* 获取旧节点的元素对象
-* 将旧节点的元素对象挂载到新节点的元素对象上
+- 获取旧节点的元素对象
+- 将旧节点的元素对象挂载到新节点的元素对象上
 
 ```javascript
 // 1.取出element对象, 并且在n2中进行保存
-const el = n2.el = n1.el;
-// 等价于 
-// const el = n1.el => el 代表旧节点的元素对象 
+const el = (n2.el = n1.el);
+// 等价于
+// const el = n1.el => el 代表旧节点的元素对象
 // n2.el = n1.el   => 将旧节点的元素对象赋值给新节点的元素对象
 ```
 
 **第二步，处理 props 的情况，添加新的属性，删除不需要的属性**
 
 ```javascript
-javascript// 2.处理props
+javascript; // 2.处理props
 const oldProps = n1.props || {};
 const newProps = n2.props || {};
 ```
 
-* 遍历新节点的属性对象，通过属性名获取新旧节点的属性值进行比较，将缺少的新属性添加到旧节点的元素对象上
+- 遍历新节点的属性对象，通过属性名获取新旧节点的属性值进行比较，将缺少的新属性添加到旧节点的元素对象上
 
 ```javascript
 // 2.1.获取所有的newProps添加到el
@@ -199,8 +199,8 @@ for (const key in newProps) {
   const oldValue = oldProps[key];
   const newValue = newProps[key];
   if (newValue !== oldValue) {
-    if (key.startsWith("on")) { 
-      el.addEventListener(key.slice(2).toLowerCase(), newValue)
+    if (key.startsWith("on")) {
+      el.addEventListener(key.slice(2).toLowerCase(), newValue);
     } else {
       el.setAttribute(key, newValue);
     }
@@ -208,15 +208,15 @@ for (const key in newProps) {
 }
 ```
 
-* 遍历旧节点的属性对象，移除事件监听，并将 key 不存在与新节点的属性对象的中的移除
+- 遍历旧节点的属性对象，移除事件监听，并将 key 不存在与新节点的属性对象的中的移除
 
 ```javascript
 // 2.2.删除旧的props
 for (const key in oldProps) {
-  if (key.startsWith("on")) { 
+  if (key.startsWith("on")) {
     const value = oldProps[key];
-    el.removeEventListener(key.slice(2).toLowerCase(), value)
-  } 
+    el.removeEventListener(key.slice(2).toLowerCase(), value);
+  }
   if (!(key in newProps)) {
     el.removeAttribute(key);
   }
@@ -225,16 +225,16 @@ for (const key in oldProps) {
 
 **第三步，在处理 children 的情况**
 
-* 如果新节点是一个字符串类型，那么直接将内容赋值给元素的 textContent
-* 如果新节点不是一个字符串类型
-  * 旧节点是一个字符串类型
-    * 将 el 的 textContent 设置为空字符串
-    * 遍历新节点，挂载到 el 上
-  * 旧节点是一个数组类型
-  * 取出数组的最小长度
-  * 遍历所有的节点，新节点和旧节点进行 patch 操作
-  * 如果新节点的长度更长，那么剩余的新节点进行挂载操作
-  * 如果旧节点的长度更长，那么剩余的旧节点进行卸载操作
+- 如果新节点是一个字符串类型，那么直接将内容赋值给元素的 textContent
+- 如果新节点不是一个字符串类型
+  - 旧节点是一个字符串类型
+    - 将 el 的 textContent 设置为空字符串
+    - 遍历新节点，挂载到 el 上
+  - 旧节点是一个数组类型
+  - 取出数组的最小长度
+  - 遍历所有的节点，新节点和旧节点进行 patch 操作
+  - 如果新节点的长度更长，那么剩余的新节点进行挂载操作
+  - 如果旧节点的长度更长，那么剩余的旧节点进行卸载操作
 
 ```
 相关代码可查看项目里的 patch.js 文件
@@ -250,66 +250,66 @@ for (const key in oldProps) {
 
 在 vue3 的响应式原理中就用了 WeakMap 来 收集依赖 。
 
-* 比如：我们有这样一个对象
+- 比如：我们有这样一个对象
 
 ```javascript
 const obj = {
-  name: '小明',
-  age: '18'
-}
+  name: "小明",
+  age: "18",
+};
 ```
 
-* 当 obj.name 改变时，执行这两个函数
+- 当 obj.name 改变时，执行这两个函数
 
 ```javascript
 function objNameFn1() {
-  console.log('objName1被执行')
+  console.log("objName1被执行");
 }
 function objNameFn2() {
-  console.log('objName2被执行')
+  console.log("objName2被执行");
 }
 ```
 
-* 当 obj.age 改变时，执行这两个函数
+- 当 obj.age 改变时，执行这两个函数
 
 ```javascript
 function objAgeFn1() {
-  console.log('objName1被执行')
+  console.log("objName1被执行");
 }
 function objAgeFn1() {
-  console.log('objName2被执行')
+  console.log("objName2被执行");
 }
 ```
 
-* 实现收集依赖结构
+- 实现收集依赖结构
 
 ```javascript
 // 创建 weakMap 和 map 组合成收集依赖的数据结构
-const weakMap = new WeakMap()
-const objMap = new Map() // obj对象
+const weakMap = new WeakMap();
+const objMap = new Map(); // obj对象
 // 实际不止一个obj对象，可能有obj2,obj3,我们将处理后的对象存在weakMap中
-weakMap.set(obj, objMap)
+weakMap.set(obj, objMap);
 // 将 objNameFn1 和 objNameFn2 收集与 obj.name 绑定
-objMap.set('name', [ objNameFn1, objNameFn2 ])
+objMap.set("name", [objNameFn1, objNameFn2]);
 // 将 objAgeFn1 和 objAgeFn2 收集与 obj.age 绑定
-objMap.set('age', [ objAgeFn1, objAgeFn1 ])
+objMap.set("age", [objAgeFn1, objAgeFn1]);
 ```
 
 **如图所示：**
 
-![1661503704282.png](image/README/1661503704282.png)
+![1661503704282.png](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/5129/1661503704282.png)
 
-* **监听执行**
+- **监听执行**
 
 ```javascript
 // 当 obj.name 发送改变时候，取出来执行
-obj.name = '小红'
+obj.name = "小红";
 // 取出对应obj的Map
-const targeMap = weakMap.get(obj)
+const targeMap = weakMap.get(obj);
 // 取出属性名对应的数组
-const fns = targeMap.get('name')
+const fns = targeMap.get("name");
 // 遍历执行
-fns.forEach((item) => item())
+fns.forEach((item) => item());
 // 打印结果：
 // objName1被执行
 // objName2被执行
@@ -321,56 +321,50 @@ fns.forEach((item) => item())
 
 ```javascript
 // 每个对象的属性应该有自己的depend对象
-let reactiveFn = null
+let reactiveFn = null;
 class Depend {
   constructor() {
-    this.reactiveFns = new Set()
+    this.reactiveFns = new Set();
   }
-
 
   depend() {
     if (reactiveFn) {
-      this.reactiveFns.add(reactiveFn)
+      this.reactiveFns.add(reactiveFn);
     }
   }
 
-
   notify() {
-    this.reactiveFns.forEach(fn => {
-      fn()
-    })
+    this.reactiveFns.forEach((fn) => {
+      fn();
+    });
   }
 }
 
-
-const targetMap = new WeakMap()
+const targetMap = new WeakMap();
 function getDepend(obj, key) {
-  let map = targetMap.get(obj)
+  let map = targetMap.get(obj);
   if (!map) {
-    map = new Map()
-    targetMap.set(obj, map)
+    map = new Map();
+    targetMap.set(obj, map);
   }
 
-
-  let dep = map.get(key)
+  let dep = map.get(key);
   if (!dep) {
-    dep = new Depend()
-    map.set(key, dep)
+    dep = new Depend();
+    map.set(key, dep);
   }
 
-
-  return dep
+  return dep;
 }
-
 
 function watchFn(fn) {
-  reactiveFn = fn
-  fn()
-  reactiveFn = null
+  reactiveFn = fn;
+  fn();
+  reactiveFn = null;
 }
 ```
 
-### **Vue3的响应式实现**
+### **Vue3 的响应式实现**
 
 Vue3 中使用 Proxy 类来创建一个代理对象，操作的是代理对象，具体实现如下：
 
@@ -378,46 +372,44 @@ Vue3 中使用 Proxy 类来创建一个代理对象，操作的是代理对象�
 function reactive(obj) {
   return new Proxy(obj, {
     get: function (target, key, receiver) {
-      const dep = getDepend(target, key)
-      dep.depend()
-      return Reflect.get(target, key, receiver)
+      const dep = getDepend(target, key);
+      dep.depend();
+      return Reflect.get(target, key, receiver);
     },
     set: function (target, key, value, receiver) {
-      Reflect.set(target, key, value, receiver)
-      const dep = getDepend(target, key)
-      dep.notify()
-    }
-  })
+      Reflect.set(target, key, value, receiver);
+      const dep = getDepend(target, key);
+      dep.notify();
+    },
+  });
 }
 ```
 
-### **Vue2的响应式实现**
+### **Vue2 的响应式实现**
 
 Vue2 中实现响应式是使用 Object.defineProperty 对一个对象里的属性进行劫持，操作的是原对象。
 
 ```javascript
 function reactive2(obj) {
-  Object.keys(obj).forEach(key => {
-    const dep = getDepend(obj, key)
-    let value = obj[key]
-
+  Object.keys(obj).forEach((key) => {
+    const dep = getDepend(obj, key);
+    let value = obj[key];
 
     Object.defineProperty(obj, key, {
       get() {
-        dep.depend()
-        return obj[key]
+        dep.depend();
+        return obj[key];
       },
       set(newValue) {
         if (value !== newValue) {
-          value = newValue
-          dep.notify()
+          value = newValue;
+          dep.notify();
         }
-      }
-    })
-  })
+      },
+    });
+  });
 
-
-  return obj
+  return obj;
 }
 ```
 
@@ -426,15 +418,15 @@ function reactive2(obj) {
 **在使用 vue 开发中，我们会引入一个 createApp 方法，并进行挂载，如下：**
 
 ```javascript
-import { createApp } from 'vue'
-const app = createApp(App)
-app.mount('#app')
+import { createApp } from "vue";
+const app = createApp(App);
+app.mount("#app");
 ```
 
 **所以，从框架的层面来说，我们需要两部分内容：**
 
-* 使用 createApp 创建一个 app 对象。
-* 该 app 对象有一个 mount 方法，可以将根组件挂载到某一个 dom 元素上。
+- 使用 createApp 创建一个 app 对象。
+- 该 app 对象有一个 mount 方法，可以将根组件挂载到某一个 dom 元素上。
 
 **实现代码如下：**
 
@@ -442,31 +434,30 @@ app.mount('#app')
 function createApp(rootComponent) {
   return {
     mount(selector) {
-      const container = document.querySelector(selector)
+      const container = document.querySelector(selector);
       let isMounted = false;
       let oldVNode = null;
-
 
       watchEffect(function () {
         if (!isMounted) {
           oldVnode = rootComponent.render();
-          mount(oldVNode, container)
+          mount(oldVNode, container);
           isMounted = true;
         } else {
           const newVNode = rootComponent.render();
           patch(oldVNode, newVNode);
           oldVNode = newVNode;
         }
-      })
-    }
-  }
+      });
+    },
+  };
 }
 ```
 
 ## 使用 rollup 打包
 
-![1661533826172.png](image/README/1661533826172.png)
+![1661533826172.png](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/5129/1661533826172.png)
 
 运行如下：
 
-![1661533840891.png](image/README/1661533840891.png)
+![1661533840891.png](https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com/5129/1661533840891.png)
